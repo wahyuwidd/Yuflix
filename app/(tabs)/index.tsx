@@ -4,17 +4,26 @@ import ParallaxNavbar from '@/components/ParallaxNavbar';
 import { useEffect, useState } from 'react';
 import CardMovies from '@/components/home/CardMovies';
 import CardPeople from '@/components/home/CardPeople';
+import { useLocalSearchParams } from 'expo-router';
 
 
 export default function HomeScreen() {
   const apiKey = process.env.EXPO_PUBLIC_TMBD_API_KEY
-
+  const { params } = useLocalSearchParams<{params: string}>();
+  
   const [People, setPeople] = useState<People[]>([]);
   const [Trending, setTrending] = useState<Movie[]>([]);
   const [TopRated, setTopRated] = useState<Movie[]>([]);
   const [Upcoming, setUpcoming] = useState<Movie[]>([]);
   const [isLoaded, setIsLoaded] = useState(true);
   const [isLoadedPeople, setIsLoadedPeople] = useState(true);
+  const [currentPage, setCurrentPage] = useState('movies');
+
+  useEffect(() => {
+    if(params != undefined){
+      setCurrentPage(params!);
+    }
+  }, [params]);
 
   useEffect(() => {
     fetch(`https://api.themoviedb.org/3/trending/all/day?api_key=${apiKey}`)
@@ -44,6 +53,22 @@ export default function HomeScreen() {
     .catch(err => { console.log(err), setIsLoadedPeople(true) })
   }, [apiKey])
 
+  const renderMoviesPage = () => (
+    <>
+      <Text style={styles.titlePoster}>People</Text>
+      <CardPeople Poeple={People} isLoaded={isLoadedPeople} />
+  
+      <Text style={styles.titlePoster}>Trending Today</Text>
+      <CardMovies Data={Trending} isLoaded={isLoaded} />
+      
+      <Text style={styles.titlePoster}>Top Rated</Text>
+      <CardMovies Data={TopRated} isLoaded={isLoaded} />
+  
+      <Text style={styles.titlePoster}>Upcoming</Text>
+      <CardMovies Data={Upcoming} isLoaded={isLoaded} />
+    </>
+  );
+
   return (
     <>
       <StatusBar barStyle="light-content" />
@@ -60,17 +85,9 @@ export default function HomeScreen() {
       > 
       <View>
 
-        <Text style={styles.titlePoster}>People</Text>
-        <CardPeople Poeple={People} isLoaded={isLoadedPeople} />
+      {currentPage === 'movies' && renderMoviesPage()}
 
-        <Text style={styles.titlePoster}>Trending Today</Text>
-        <CardMovies Data={Trending} isLoaded={isLoaded} />
-        
-        <Text style={styles.titlePoster}>Top Rated</Text>
-        <CardMovies Data={TopRated} isLoaded={isLoaded} />
-
-        <Text style={styles.titlePoster}>Upcoming</Text>
-        <CardMovies Data={Upcoming} isLoaded={isLoaded} />
+      {currentPage === 'Popular' && renderMoviesPage()}
 
       </View>
 
