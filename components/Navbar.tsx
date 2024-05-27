@@ -10,7 +10,7 @@ const CustomHeader: React.FC<CustomHeaderProps> = ({ children }) => {
   return (
     <View style={[{ flexDirection: 'row', alignItems: 'center', gap: 40, }]}>
       <Image
-        source={require('@/assets/images/logo.png')}
+        source={require('@/assets/images/logo-1.png')}
         style={{ width: 60, height: 60, marginRight: 1,  }}
       />
       <Link style={styles.textTitle} href={"/popular"}>Popular</Link>
