@@ -14,6 +14,7 @@ export default function RootLayout() {
   const colorScheme = useColorScheme();
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+    TacOne: require('../assets/fonts/TacOne-Regular.ttf'),
   });
 
   useEffect(() => {
@@ -30,6 +31,8 @@ export default function RootLayout() {
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name='movies/detail/[id]' options={{ headerShown: true, headerTransparent : true, headerTitle: "", headerTintColor: "white" }} />
+        <Stack.Screen name='tv/detail/[id]' options={{ headerShown: true, headerTransparent : true, headerTitle: "", headerTintColor: "white" }} />
         <Stack.Screen name="+not-found" />
       </Stack>
     </ThemeProvider>

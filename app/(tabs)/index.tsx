@@ -1,52 +1,81 @@
-import { Image, StyleSheet, Platform } from 'react-native';
+import { StyleSheet, StatusBar, Text, View, ScrollView } from 'react-native';
+import { Image } from 'expo-image';
+import ParallaxNavbar from '@/components/ParallaxNavbar';
+import { useEffect, useState } from 'react';
+import CardMovies from '@/components/home/CardMovies';
+import CardPeople from '@/components/home/CardPeople';
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
 
 export default function HomeScreen() {
+  const apiKey = process.env.EXPO_PUBLIC_TMBD_API_KEY
+
+  const [People, setPeople] = useState<People[]>([]);
+  const [Trending, setTrending] = useState<Movie[]>([]);
+  const [TopRated, setTopRated] = useState<Movie[]>([]);
+  const [Upcoming, setUpcoming] = useState<Movie[]>([]);
+  const [isLoaded, setIsLoaded] = useState(true);
+  const [isLoadedPeople, setIsLoadedPeople] = useState(true);
+
+  useEffect(() => {
+    fetch(`https://api.themoviedb.org/3/trending/all/day?api_key=${apiKey}`)
+    .then(response => response.json())
+    .then(data => { setTrending(data.results), setIsLoaded(false) })
+    .catch(err => { console.log(err), setIsLoaded(true) })
+    }, [apiKey])
+
+  useEffect(() => {
+  fetch(`https://api.themoviedb.org/3/movie/top_rated?api_key=${apiKey}`)
+  .then(response => response.json())
+  .then(data => { setTopRated(data.results), setIsLoaded(false) })
+  .catch(err => { console.log(err), setIsLoaded(true) })
+  }, [apiKey])
+  
+  useEffect(() => {
+  fetch(`https://api.themoviedb.org/3/movie/upcoming?api_key=${apiKey}`)
+  .then(response => response.json())
+  .then(data => { setUpcoming(data.results), setIsLoaded(false) })
+  .catch(err => { console.log(err), setIsLoaded(true) })
+  }, [apiKey])
+
+  useEffect(() => {
+    fetch(`https://api.themoviedb.org/3/trending/person/day?api_key=${apiKey}`)
+    .then(response => response.json())
+    .then(data => { setPeople(data.results), setIsLoadedPeople(false) })
+    .catch(err => { console.log(err), setIsLoadedPeople(true) })
+  }, [apiKey])
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({ ios: 'cmd + d', android: 'cmd + m' })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+    <>
+      <StatusBar barStyle="light-content" />
+      <ParallaxNavbar
+        headerBackgroundColor={{ light: "#A1CEDC", dark: "#1D3D47" }}
+        headerImage={
+          <Image
+            source={{
+              uri: "https://asset-a.grid.id/crop/0x0:0x0/x/photo/2024/03/17/exhuma-11-022624-1075x1536jpg-20240317035509.jpg",
+            }}
+            style={styles.poster}
+          />
+        }
+      > 
+      <View>
+
+        <Text style={styles.titlePoster}>People</Text>
+        <CardPeople Poeple={People} isLoaded={isLoadedPeople} />
+
+        <Text style={styles.titlePoster}>Trending Today</Text>
+        <CardMovies Data={Trending} isLoaded={isLoaded} />
+        
+        <Text style={styles.titlePoster}>Top Rated</Text>
+        <CardMovies Data={TopRated} isLoaded={isLoaded} />
+
+        <Text style={styles.titlePoster}>Upcoming</Text>
+        <CardMovies Data={Upcoming} isLoaded={isLoaded} />
+
+      </View>
+
+      </ParallaxNavbar>
+    </>
   );
 }
 
@@ -60,11 +89,16 @@ const styles = StyleSheet.create({
     gap: 8,
     marginBottom: 8,
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  poster: {
+    height: "100%",
+    width: "100%",
+    position: "absolute",
+    
   },
+  titlePoster: {
+    color: 'white', 
+    fontWeight: 'bold', 
+    fontSize: 17,
+    marginBottom: 5
+  }
 });

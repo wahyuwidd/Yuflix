@@ -1,15 +1,15 @@
 import { useState, type PropsWithChildren, type ReactElement } from 'react';
-import { StyleSheet, useColorScheme, View } from 'react-native';
+import { StyleSheet, useColorScheme, View, Text } from 'react-native';
 import Animated, {
-  Extrapolate,
   interpolate,
   useAnimatedRef,
   useAnimatedStyle,
-  useDerivedValue,
   useScrollViewOffset,
 } from 'react-native-reanimated';
 
 import { ThemedView } from '@/components/ThemedView';
+import ToggleMenu from './home/ToggleMenu';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const HEADER_HEIGHT = 250;
 
@@ -18,7 +18,7 @@ type Props = PropsWithChildren<{
   headerBackgroundColor: { dark: string; light: string };
 }>;
 
-export default function ParallaxScrollView({
+export default function ParallaxNavbar({
   children,
   headerImage,
   headerBackgroundColor,
@@ -48,20 +48,34 @@ export default function ParallaxScrollView({
   const handleScroll = (event: { nativeEvent: { contentOffset: { y: any; }; }; }) => {
     const scrollPosition = event.nativeEvent.contentOffset.y;
     // Sesuaikan dengan nilai yang sesuai untuk mengubah opacity
-    const newOpacity = scrollPosition > 420 ? 1 : 0;
+    const newOpacity = scrollPosition > 100 ? 1 : 0;
     setOverlayOpacity(newOpacity);
   };
 
   return (
     <ThemedView style={styles.container}>
       <View style={[styles.overlayNav, { opacity: overlayOpacity }]} />
-      <Animated.ScrollView ref={scrollRef} onScroll={handleScroll} scrollEventThrottle={16}>
+      <Animated.ScrollView
+        ref={scrollRef}
+        onScroll={handleScroll}
+        scrollEventThrottle={16}
+      >
         <Animated.View
           style={[
             styles.header,
             { backgroundColor: headerBackgroundColor[colorScheme] },
-            headerAnimatedStyle,
-          ]}>
+            // headerAnimatedStyle,
+          ]}
+        >
+          <View style={styles.overlay} />
+          <ToggleMenu />
+          <LinearGradient
+            // Button Linear Gradient
+            className='z-20'
+            colors={['rgba(21, 21, 21, 0.1)', 'rgba(21, 21, 21, 7)', ]}
+            style={styles.LinierContainer}
+          >
+          </LinearGradient>
           {headerImage}
         </Animated.View>
         <ThemedView style={styles.content}>{children}</ThemedView>
@@ -78,6 +92,13 @@ const styles = StyleSheet.create({
     height: 500,
     overflow: 'hidden',
   },
+  background: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    height: 300,
+  },
   content: {
     flex: 1,
     paddingLeft: 10,
@@ -86,17 +107,21 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     gap: 16,
     overflow: 'hidden',
-    backgroundColor: 'black',
+    backgroundColor: '#151515',
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    backgroundColor: '#151515',
+    opacity: 0.6,
     zIndex: 1
   },
   overlayNav: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0, 0, 0, 1)',
+    backgroundColor: '#151515',
     height: 95,
     zIndex: 2
+  },
+  LinierContainer: {
+    flex: 0.8
   }
 });
