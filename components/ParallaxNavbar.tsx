@@ -16,7 +16,7 @@ const HEADER_HEIGHT = 250;
 type Props = PropsWithChildren<{
   headerImage: ReactElement;
   headerBackgroundColor: { dark: string; light: string };
-  data: Movie[];
+  data: any[];
 }>;
 
 export default function ParallaxNavbar({

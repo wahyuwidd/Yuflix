@@ -6,15 +6,27 @@ import { Ionicons } from '@expo/vector-icons';
 import { Link } from 'expo-router';
 import { api } from '@/utils/api';
 
-const ToggleMenu = ({data}:{data:Movie[]}) => {
+const ToggleMenu = ({data}:{data:any[]}) => {
     const [movieDetail, setMovieDetail] = useState<Moviedetail>();
     const [movieVideo, setMovieVideo] = useState<MovieVideo>();
     const [isLoaded, setIsLoaded] = useState(false);
-    const [isLoadedDetail, setIsLoadedDetail] = useState(true);
+    const [TvDetail, setTvDetail] = useState<Tv>();
+    const [isTv, setIsTv] = useState(false);
+    const [isLoadedDetail, setIsLoadedDetail] = useState(false);
+    const [isLoadedTvDetail, setIsLoadedTvDetail] = useState(false);
 
     useEffect(() => {
         if (data.length !== 0) {
             setIsLoaded(true);
+            // console.log(data[0].media_type);
+            
+            if (data[0].media_type === 'tv') {
+                setIsTv(true);
+            } else if (data[0].media_type === 'movie') {
+                setIsTv(false)
+            } else if (data[0].media_type === undefined) {
+                setIsTv(false)
+            }
         }
     }, [data]);
 
@@ -24,7 +36,11 @@ const ToggleMenu = ({data}:{data:Movie[]}) => {
         if (id) {
             fetch(`${api}/movie/${id}?api_key=${process.env.EXPO_PUBLIC_TMBD_API_KEY}`)
                 .then(response => response.json())
-                .then(data => {setMovieDetail(data),()=> setIsLoadedDetail(true)});
+                .then(data => {
+                    setMovieDetail(data) 
+                    setIsLoadedDetail(true)
+                })
+                .catch(err => {console.log(err), ()=> setIsLoadedDetail(false)});
         }
     }, [id]);
 
@@ -32,25 +48,52 @@ const ToggleMenu = ({data}:{data:Movie[]}) => {
         if (id) {
             fetch(`${api}/movie/${id}/videos?api_key=${process.env.EXPO_PUBLIC_TMBD_API_KEY}`)
                 .then(response => response.json())
-                .then(data => setMovieVideo(data));
+                .then(data => setMovieVideo(data))
         }
-    }, [id]);    
-    console.log(movieDetail);
+    }, [id]);
+    
+    useEffect(() => {
+        if (id) {
+            fetch(`${api}/tv/${id}?api_key=${process.env.EXPO_PUBLIC_TMBD_API_KEY}`)
+                .then(response => response.json())
+                .then(data => {
+                    setTvDetail(data);
+                    // setIsLoadedTvDetail(true);
+                })
+                .catch(err => {console.log(err), ()=> setIsLoadedTvDetail(false)});  
+        }
+    }, [id]);
+
+    console.log(isLoadedDetail);
     
 return (
     <>
     <View className='mt-[300px] justify-center items-center text-center z-20'>
-        {data.length != 0 && <Text style={{ fontFamily: "TacOne"}} className='text-white font-bold text-5xl'>{data[0].title}</Text>}
+        {data.length != 0 && <Text style={{ fontFamily: "TacOne"}} className='text-white font-bold text-5xl'>{isTv ? TvDetail?.name : movieDetail?.title}</Text>}
     </View>
     <View className='flex-1 justify-center mt-[20px] z-20' style={[{ flexDirection: 'column', alignItems: 'center' }]}>
         <View className='flex-row justify-center mb-4'>
         {isLoadedDetail ? (
-            <>
-            {movieDetail?.genres.map((genre, index) => (
-            <Link key={genre.id} href={`/genre/${genre.id}-${genre.name}`} className="text-white mx-2">
-            {genre.name}
-            </Link>
-        ))}
+            <> 
+                {isTv ? (
+                    <>
+                        {TvDetail?.genres?.map((genre, index) => (
+                        <Link href={`/genre/${genre.id}-${genre.name}`} key={genre.id} className="text-gray-300 text-sm text-center">
+                        {genre.name}
+                        {index < TvDetail.genres.length - 1 ? ' · ' : ''}
+                        </Link>
+                        ))}
+                    </>
+                ): (
+                    <>
+                        {movieDetail?.genres?.map((genre, index) => (
+                        <Link href={`/genre/${genre.id}-${genre.name}`} key={genre.id} className="text-gray-300 text-sm text-center">
+                        {genre.name}
+                        {index < movieDetail.genres.length - 1 ? ' · ' : ''}
+                        </Link>
+                        ))}
+                    </>
+                )}
             </>
         ): null}
         

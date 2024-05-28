@@ -161,7 +161,7 @@ export default function HomeScreen() {
             style={styles.poster}
           />
         }
-      data={MoviePopular}
+        data={(currentPage === 'movies' ? Trending : currentPage === 'popular' ? MoviePopular : currentPage === 'tv' ? TvTrending : []) as any[]}
       > 
       <View>
 
