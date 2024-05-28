@@ -24,8 +24,8 @@ const CustomHeader: React.FC<CustomHeaderProps> = ({ children }) => {
         style={{ width: 60, height: 60, marginRight: 1,  }}
       />
       <Text onPress={() => handleClick('movies')} style={styles.textTitle} >Movies</Text>
-      <Text onPress={() => handleClick('Popular')} style={styles.textTitle} >Popular</Text>
-      <Text onPress={() => handleClick('Tv Show')} style={styles.textTitle} >Tv Show</Text>
+      <Text onPress={() => handleClick('popular')} style={styles.textTitle} >Popular</Text>
+      <Text onPress={() => handleClick('tv')} style={styles.textTitle} >Tv Show</Text>
     </View>
   );
 };

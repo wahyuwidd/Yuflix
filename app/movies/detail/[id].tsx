@@ -1,7 +1,7 @@
 import { Image } from 'expo-image';
 import { View, Text, StyleSheet, Linking, ScrollView } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { useLocalSearchParams } from 'expo-router'
+import { Link, useLocalSearchParams } from 'expo-router'
 import { FontAwesome5 } from '@expo/vector-icons';
 
 const DetailMovie = () => {
@@ -45,10 +45,10 @@ const DetailMovie = () => {
         </View>
         <View className='mt-2 items-center justify-center mx-10' style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
         {movieDetail?.genres?.map((genre, index) => (
-          <Text key={genre.id} className="text-gray-300 text-sm text-center">
+          <Link href={`/genre/${genre.id}-${genre.name}`} key={genre.id} className="text-gray-300 text-sm text-center">
             {genre.name}
             {index < movieDetail.genres.length - 1 ? ' · ' : ''}
-          </Text>
+          </Link>
         ))}
         </View>
         <Text onPress={() => handlePress(`https://www.youtube.com/watch?v=${movieVideo?.results[0]?.key}`)} className='mt-[10px] bg-white px-32 py-3 rounded-md font-bold'><FontAwesome5 name="play" size={15} color="black" /> Play </Text>

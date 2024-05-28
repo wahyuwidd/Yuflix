@@ -4,7 +4,7 @@ import React from 'react'
 import { Link } from 'expo-router'
 import SkeletonCardHome from './Skeleton';
 
-const CardMovies = ( {Data, isLoaded, isTrending}: {Data : Movie[], isLoaded : boolean, isTrending : boolean} ) => {
+const CardTv = ( {Data, isLoaded, isTrending}: {Data : Tv[], isLoaded : boolean, isTrending : boolean} ) => {
     const filteredData = Data.filter((_, index) => index !== 0);
     const blurhash =
   '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
@@ -29,7 +29,7 @@ const CardMovies = ( {Data, isLoaded, isTrending}: {Data : Movie[], isLoaded : b
           )) : Data.map((data, index) => (
             <Link
               className="h-[170px] w-[115px] rounded-md mb-3"
-              href={`/movies/detail/${data.id}`}
+              href={`/tv/detail/${data.id}`}
               key={index}
             >
               <Image
@@ -47,4 +47,4 @@ const CardMovies = ( {Data, isLoaded, isTrending}: {Data : Movie[], isLoaded : b
     ); 
 }
 
-export default CardMovies
+export default CardTv

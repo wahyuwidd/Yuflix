@@ -16,12 +16,14 @@ const HEADER_HEIGHT = 250;
 type Props = PropsWithChildren<{
   headerImage: ReactElement;
   headerBackgroundColor: { dark: string; light: string };
+  data: Movie[];
 }>;
 
 export default function ParallaxNavbar({
   children,
   headerImage,
   headerBackgroundColor,
+  data
 }: Props) {
   const colorScheme = useColorScheme() ?? 'light';
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
@@ -68,17 +70,16 @@ export default function ParallaxNavbar({
           ]}
         >
           <View style={styles.overlay} />
-          <ToggleMenu />
+          <ToggleMenu data={data} />
           <LinearGradient
             // Button Linear Gradient
             className='z-20'
             colors={['rgba(21, 21, 21, 0.1)', 'rgba(21, 21, 21, 7)', ]}
             style={styles.LinierContainer}
-          >
-          </LinearGradient>
+          />
           {headerImage}
         </Animated.View>
-        <ThemedView style={styles.content}>{children}</ThemedView>
+        <View className='bg-[#151515]' style={styles.content}>{children}</View>
       </Animated.ScrollView>
     </ThemedView>
   );
@@ -89,7 +90,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    height: 500,
+    height: 530,
     overflow: 'hidden',
   },
   background: {
@@ -104,7 +105,6 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingRight: 10,
     paddingBottom: 20,
-    paddingTop: 20,
     gap: 16,
     overflow: 'hidden',
     backgroundColor: '#151515',
@@ -122,6 +122,7 @@ const styles = StyleSheet.create({
     zIndex: 2
   },
   LinierContainer: {
-    flex: 0.8
+    flex: 1,
+    marginTop: 20
   }
 });
