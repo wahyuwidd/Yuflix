@@ -18,7 +18,6 @@ const ToggleMenu = ({data}:{data:any[]}) => {
     useEffect(() => {
         if (data.length !== 0) {
             setIsLoaded(true);
-            // console.log(data[0].media_type);
             
             if (data[0].media_type === 'tv') {
                 setIsTv(true);
@@ -64,7 +63,6 @@ const ToggleMenu = ({data}:{data:any[]}) => {
         }
     }, [id]);
 
-    console.log(isLoadedDetail);
     
 return (
     <>
@@ -105,7 +103,7 @@ return (
                         <Text className='text-gray-300' style={{ fontSize: 10 }}>MyList</Text>
                     </View><Text className='text-black bg-white px-6 pr-6 py-3 rounded-md font-bold'>
                             <FontAwesome5 name="play" size={15} color="black" />  Watch Trailer
-                        </Text><Link href={`/movies/detail/${data[0].id}`}>
+                        </Text><Link href={isTv ? `/tv/detail/${data[0].id}` : `/movies/detail/${data[0].id}`}>
                             <View className='items-center mt-2'>
                                 <AntDesign name="infocirlceo" size={16} color="white" />
                                 <Text className='text-gray-300' style={{ fontSize: 10 }}>Info</Text>
