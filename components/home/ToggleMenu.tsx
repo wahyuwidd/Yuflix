@@ -1,4 +1,4 @@
-import { View, Text, } from 'react-native'
+import { View, Text, Linking, } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { FontAwesome5 } from '@expo/vector-icons';
@@ -9,11 +9,16 @@ import { api } from '@/utils/api';
 const ToggleMenu = ({data}:{data:any[]}) => {
     const [movieDetail, setMovieDetail] = useState<Moviedetail>();
     const [movieVideo, setMovieVideo] = useState<MovieVideo>();
+    const [TvVideo, setTvVideo] = useState<MovieVideo>();
     const [isLoaded, setIsLoaded] = useState(false);
     const [TvDetail, setTvDetail] = useState<Tv>();
     const [isTv, setIsTv] = useState(false);
     const [isLoadedDetail, setIsLoadedDetail] = useState(false);
     const [isLoadedTvDetail, setIsLoadedTvDetail] = useState(false);
+    const [isTvTrailer, setIstvTrailer] = useState(false);
+    const [isMovieTrailer, setIsMovieTrailer] = useState(false);
+    const [movietrailer, setMovieTrailer] = useState('');
+    const [tvTrailer, setTvTrailer] = useState('');
 
     useEffect(() => {
         if (data.length !== 0) {
@@ -43,13 +48,6 @@ const ToggleMenu = ({data}:{data:any[]}) => {
         }
     }, [id]);
 
-    useEffect(() => {
-        if (id) {
-            fetch(`${api}/movie/${id}/videos?api_key=${process.env.EXPO_PUBLIC_TMBD_API_KEY}`)
-                .then(response => response.json())
-                .then(data => setMovieVideo(data))
-        }
-    }, [id]);
     
     useEffect(() => {
         if (id) {
@@ -57,12 +55,62 @@ const ToggleMenu = ({data}:{data:any[]}) => {
                 .then(response => response.json())
                 .then(data => {
                     setTvDetail(data);
-                    // setIsLoadedTvDetail(true);
                 })
-                .catch(err => {console.log(err), ()=> setIsLoadedTvDetail(false)});  
+                .catch(err => {console.log(err), ()=> setIsLoadedTvDetail(false)});
         }
     }, [id]);
 
+    useEffect(() => {
+        if(id) {
+            fetch(`https://api.themoviedb.org/3/movie/${id}/videos?api_key=${process.env.EXPO_PUBLIC_TMBD_API_KEY}`)
+            .then(response => response.json())
+            .then(data => {
+                setMovieVideo(data);
+                
+                if (data && data.results) {
+                    const trailerVideo = data.results.find((video: { type: string; }) => video.type === 'Trailer') || data.results[0];
+                    setMovieTrailer(trailerVideo?.key || '');
+                } else {
+                    setMovieTrailer('');
+                }
+                
+                setIsMovieTrailer(true);
+            })
+            .catch(error => {
+                console.error('Error fetching movie videos:', error);
+                setMovieTrailer('');
+                setIsMovieTrailer(false);
+            });
+        } 
+    }, [id])
+
+    useEffect(() => {
+        if(id){
+            fetch(`https://api.themoviedb.org/3/tv/${id}/videos?api_key=${process.env.EXPO_PUBLIC_TMBD_API_KEY}`)
+            .then(response => response.json())
+            .then(data => {
+                setTvVideo(data);
+                
+                if (data && data.results) {
+                    const trailerVideo = data.results.find((video: { type: string; }) => video.type === 'Trailer') || (movieVideo && movieVideo.results ? movieVideo.results[0] : undefined);
+                    setTvTrailer(trailerVideo?.key || '');
+                } else {
+                    setTvTrailer('');
+                }
+                
+                setIstvTrailer(true);
+            })
+            .catch(error => {
+                console.error('Error fetching TV videos:', error);
+                setTvTrailer('');
+                setIstvTrailer(false);
+            });
+        }
+    }, [id])
+
+    const handlePress = (url: string) => {
+        Linking.openURL(`https://www.youtube.com/watch?v=${url}`).catch(err => console.error("Couldn't load page", err));
+    }
     
 return (
     <>
@@ -101,7 +149,7 @@ return (
                 <><View className='items-center mt-2'>
                         <Ionicons name="add" size={16} color="white" />
                         <Text className='text-gray-300' style={{ fontSize: 10 }}>MyList</Text>
-                    </View><Text className='text-black bg-white px-6 pr-6 py-3 rounded-md font-bold'>
+                    </View><Text onPress={() => handlePress(isTv ? `${tvTrailer}` : `${movietrailer}`)} className='text-black bg-white px-6 pr-6 py-3 rounded-md font-bold'>
                             <FontAwesome5 name="play" size={15} color="black" />  Watch Trailer
                         </Text><Link href={isTv ? `/tv/detail/${data[0].id}` : `/movies/detail/${data[0].id}`}>
                             <View className='items-center mt-2'>
