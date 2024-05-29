@@ -18,7 +18,7 @@ const CardPeople = ({Poeple}: {Poeple : People[]}) => {
             }}
             />
             <View className='absolute'>
-                <Text key={data.id} className='text-white mt-[100px] font-bold text-md'>{data.name}</Text>
+                <Text key={data.id} className='text-white text-center mt-[100px] font-bold text-md'>{data.name}</Text>
                 <View className='justify-center items-center text-center'>
                     <Text key={data.popularity} className='text-gray-300 mt-1 text-xs'>{data.known_for_department}</Text>
                 </View>

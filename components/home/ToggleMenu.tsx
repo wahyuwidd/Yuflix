@@ -115,7 +115,7 @@ const ToggleMenu = ({data}:{data:any[]}) => {
 return (
     <>
     <View className='mt-[300px] justify-center items-center text-center z-20'>
-        {data.length != 0 && <Text style={{ fontFamily: "TacOne"}} className='text-white font-bold text-5xl'>{isTv ? TvDetail?.name : movieDetail?.title}</Text>}
+        {data.length != 0 && <Text style={{ fontFamily: "TacOne"}} className='text-white text-center font-bold text-5xl'>{isTv ? TvDetail?.name : movieDetail?.title}</Text>}
     </View>
     <View className='flex-1 justify-center mt-[20px] z-20' style={[{ flexDirection: 'column', alignItems: 'center' }]}>
         <View className='flex-row justify-center mb-4'>
