@@ -7,6 +7,8 @@ import CardPeople from '@/components/home/CardPeople';
 import { useLocalSearchParams } from 'expo-router';
 import { api, imageBaseUrl } from '@/utils/api';
 import CardTv from '@/components/home/CardTv';
+import SkeletonCardHome from '@/components/home/Skeleton';
+import SkeletonCardPeople from '@/components/home/SkeletonPeople';
 
 
 export default function HomeScreen() {
@@ -26,6 +28,13 @@ export default function HomeScreen() {
   const [isLoaded, setIsLoaded] = useState(true);
   const [isLoadedPeople, setIsLoadedPeople] = useState(true);
   const [currentPage, setCurrentPage] = useState('movies');
+  const [isLoadedPopular, setIsLoadedPopular] = useState(true);
+  const [isLoadedTrending, setIsLoadedTrending] = useState(true);
+  const [isLoadedTopRated, setIsLoadedTopRated] = useState(true);
+  const [isLoadedUpcoming, setIsLoadedUpcoming] = useState(true);
+  const [isLoadedTvTrending, setIsLoadedTvTrending] = useState(true);
+  const [isLoadedTvTopRated, setIsLoadedTvTopRated] = useState(true);
+  const [isLoadedTvOnAir, setIsLoadedTvOnAir] = useState(true);
 
   useEffect(() => {
     if(params != undefined){
@@ -36,22 +45,22 @@ export default function HomeScreen() {
   useEffect(() => {
     fetch(`${api}/trending/movie/day?api_key=${apiKey}`)
     .then(response => response.json())
-    .then(data => { setTrending(data.results), setIsLoaded(false) })
-    .catch(err => { console.log(err), setIsLoaded(true) })
+    .then(data => { setTrending(data.results), setIsLoadedTrending(false) })
+    .catch(err => { console.log(err), setIsLoadedTrending(true) })
     }, [apiKey])
 
   useEffect(() => {
   fetch(`${api}/movie/top_rated?api_key=${apiKey}`)
   .then(response => response.json())
-  .then(data => { setTopRated(data.results), setIsLoaded(false) })
-  .catch(err => { console.log(err), setIsLoaded(true) })
+  .then(data => { setTopRated(data.results), setIsLoadedTopRated(false) })
+  .catch(err => { console.log(err), setIsLoadedTopRated(true) })
   }, [apiKey])
   
   useEffect(() => {
   fetch(`${api}/movie/upcoming?api_key=${apiKey}`)
   .then(response => response.json())
-  .then(data => { setUpcoming(data.results), setIsLoaded(false) })
-  .catch(err => { console.log(err), setIsLoaded(true) })
+  .then(data => { setUpcoming(data.results), setIsLoadedUpcoming(false) })
+  .catch(err => { console.log(err), setIsLoadedUpcoming(true) })
   }, [apiKey])
 
   useEffect(() => {
@@ -64,68 +73,85 @@ export default function HomeScreen() {
   useEffect(() => {
     fetch(`${api}/person/popular?api_key=${apiKey}`)
     .then(response => response.json())
-    .then(data => { setPeoplePopular(data.results), setIsLoadedPeople(false) })
-    .catch(err => { console.log(err), setIsLoadedPeople(true) })
+    .then(data => { setPeoplePopular(data.results) })
+    .catch(err => { console.log(err) })
   }, [apiKey])
 
   useEffect(() => {
     fetch(`${api}/movie/popular?api_key=${apiKey}`)
     .then(response => response.json())
-    .then(data => { setMoviePopular(data.results), setIsLoadedPeople(false) })
-    .catch(err => { console.log(err), setIsLoadedPeople(true) })
+    .then(data => { setMoviePopular(data.results) })
+    .catch(err => { console.log(err)})
   }, [apiKey])
 
   useEffect(() => {
     fetch(`${api}/tv/popular?api_key=${apiKey}`)
     .then(response => response.json())
-    .then(data => { setTvPopular(data.results), setIsLoadedPeople(false) })
-    .catch(err => { console.log(err), setIsLoadedPeople(true) })
+    .then(data => { setTvPopular(data.results) })
+    .catch(err => { console.log(err)})
   }, [apiKey])
 
   useEffect(() => {
     fetch(`${api}/trending/tv/day?api_key=${apiKey}`)
     .then(response => response.json())
-    .then(data => { setTvTrending(data.results), setIsLoadedPeople(false) })
-    .catch(err => { console.log(err), setIsLoadedPeople(true) })
+    .then(data => { setTvTrending(data.results) })
+    .catch(err => { console.log(err)})
   }, [apiKey])
 
   useEffect(() => {
     fetch(`${api}/tv/top_rated?api_key=${apiKey}`)
     .then(response => response.json())
-    .then(data => { setTvTopRated(data.results), setIsLoadedPeople(false) })
-    .catch(err => { console.log(err), setIsLoadedPeople(true) })
+    .then(data => { setTvTopRated(data.results) })
+    .catch(err => { console.log(err)})
   }, [apiKey])
 
   useEffect(() => {
     fetch(`${api}/tv/on_the_air?api_key=${apiKey}`)
     .then(response => response.json())
-    .then(data => { setTvOnAir(data.results), setIsLoadedPeople(false) })
-    .catch(err => { console.log(err), setIsLoadedPeople(true) })
-  }, [apiKey])
+    .then(data => { setTvOnAir(data.results) })
+    .catch(err => { console.log(err)})
+  }, [apiKey])  
   
   const renderMoviesPage = () => (
     <>
       <Text style={styles.titlePoster}>Top Cast</Text>
-      <CardPeople Poeple={People} isLoaded={isLoadedPeople} />
-  
+      {isLoadedPeople ? (
+        <>
+          <SkeletonCardPeople />
+        </>
+      ): <CardPeople Poeple={People} /> }
+      
       <Text style={styles.titlePoster}>Trending Today</Text>
-      <CardMovies Data={Trending} isLoaded={isLoaded} isTrending={true} />
+      {isLoadedTrending ? (
+        <>
+          <SkeletonCardHome />
+        </>
+      ): <CardMovies Data={Trending} isTrending={true} /> }
       
       <Text style={styles.titlePoster}>Top Rated</Text>
-      <CardMovies Data={TopRated} isLoaded={isLoaded} isTrending={false} />
-  
+      {isLoadedTopRated ? (
+        <>
+          <SkeletonCardHome />
+        </>
+      ): <CardMovies Data={TopRated} isTrending={false} /> }
+      
       <Text style={styles.titlePoster}>Upcoming</Text>
-      <CardMovies Data={Upcoming} isLoaded={isLoaded} isTrending={false} />
+      {isLoadedUpcoming ? (
+        <>
+          <SkeletonCardHome />
+        </>
+      ): <CardMovies Data={Upcoming} isTrending={false} /> }
+  
     </>
   );
 
   const renderPopularPage = () => (
     <>
       <Text style={styles.titlePoster}>Popular Cast</Text>
-      <CardPeople Poeple={PeoplePopular} isLoaded={isLoadedPeople} />
+      <CardPeople Poeple={PeoplePopular} />
   
       <Text style={styles.titlePoster}>Popular Movies</Text>
-      <CardMovies Data={MoviePopular} isLoaded={isLoaded} isTrending={true} />
+      <CardMovies Data={MoviePopular} isTrending={true} />
       
       <Text style={styles.titlePoster}>Popular TV</Text>
       <CardTv Data={TvPopular} isLoaded={isLoaded} isTrending={false} />
@@ -135,7 +161,7 @@ export default function HomeScreen() {
   const renderTvPage = () => (
     <>
       <Text style={styles.titlePoster}>Top Cast</Text>
-      <CardPeople Poeple={People} isLoaded={isLoadedPeople} />
+      <CardPeople Poeple={People} />
   
       <Text style={styles.titlePoster}>Trending Today</Text>
       <CardTv Data={TvTrending} isLoaded={isLoaded} isTrending={true} />

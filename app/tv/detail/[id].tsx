@@ -55,7 +55,10 @@ const { id } = useLocalSearchParams<{id: string}>();
           </Text>
         ))}
         </View>
-        <Text onPress={() => handlePress(`https://www.youtube.com/watch?v=${movieVideo?.results[0]?.key}`)} className='mt-[10px] bg-white px-32 py-3 rounded-md font-bold'><FontAwesome5 name="play" size={15} color="black" /> Play </Text>
+        {
+          movieVideo!.results.length > 0 && (
+            <Text onPress={() => handlePress(`https://www.youtube.com/watch?v=${movieVideo?.results[0]?.key}`)} className='mt-[10px] bg-white px-32 py-3 rounded-md font-bold'><FontAwesome5 name="play" size={15} color="black" /> Play </Text>
+        )}
         <Text className='px-1 mx-[5px] text-md text-white mt-4'>{isLongText && !isExpanded ? `${tvDetail?.overview.substring(0, 160)}...` : tvDetail?.overview}</Text>
         {isLongText && (
         <Text className='text-blue-300 text-sm font-bold' onPress={toggleExpansion}>

@@ -3,11 +3,11 @@ import { View, Text, ScrollView, Image } from 'react-native'
 import React from 'react'
 import SkeletonCardPeople from './SkeletonPeople';
 
-const CardPeople = ({Poeple, isLoaded}: {Poeple : People[], isLoaded : boolean}) => {
+const CardPeople = ({Poeple}: {Poeple : People[]}) => {
     const colors = ['red', 'blue', 'green', 'yellow', 'purple'];
     return (
     <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-        {isLoaded ? <SkeletonCardPeople /> : <View className="flex flex-row gap-1">
+        <View className="flex flex-row gap-1">
         {Poeple.map((data, index) => (
             <View key={index} className='mb-8 items-center text-center justify-center'>
             <Image
@@ -25,7 +25,7 @@ const CardPeople = ({Poeple, isLoaded}: {Poeple : People[], isLoaded : boolean})
             </View>
         </View>
         ))}
-        </View>}
+        </View>
     </ScrollView>
 )
 }
