@@ -4,13 +4,13 @@ import React from 'react'
 import { Link } from 'expo-router'
 import SkeletonCardHome from './Skeleton';
 
-const CardTv = ( {Data, isLoaded, isTrending}: {Data : Tv[], isLoaded : boolean, isTrending : boolean} ) => {
+const CardTv = ( {Data, isTrending}: {Data : Tv[], isTrending : boolean} ) => {
     const filteredData = Data.filter((_, index) => index !== 0);
     const blurhash =
   '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
     return (
       <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-      {isLoaded ? <SkeletonCardHome /> : <View className="flex flex-row gap-1">
+      <View className="flex flex-row gap-1">
           {isTrending ? filteredData.map((data, index) => (
             <Link
               className="h-[170px] w-[115px] rounded-md mb-3"
@@ -42,7 +42,7 @@ const CardTv = ( {Data, isLoaded, isTrending}: {Data : Tv[], isLoaded : boolean,
               />
             </Link>
           ))}
-        </View>}
+        </View>
       </ScrollView>
     ); 
 }
