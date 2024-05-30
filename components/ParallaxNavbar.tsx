@@ -1,58 +1,51 @@
-import { useState, type PropsWithChildren, type ReactElement } from 'react';
-import { StyleSheet, useColorScheme, View, Text } from 'react-native';
+import { useEffect, useState, type PropsWithChildren, type ReactElement } from 'react';
+import { Image } from 'expo-image';
+import { StyleSheet, View, useColorScheme } from 'react-native';
 import Animated, {
-  interpolate,
   useAnimatedRef,
-  useAnimatedStyle,
-  useScrollViewOffset,
 } from 'react-native-reanimated';
 
 import { ThemedView } from '@/components/ThemedView';
 import ToggleMenu from './home/ToggleMenu';
 import { LinearGradient } from 'expo-linear-gradient';
-
-const HEADER_HEIGHT = 250;
+import { api, imageBaseUrl } from '@/utils/api';
 
 type Props = PropsWithChildren<{
-  headerImage: ReactElement;
-  headerBackgroundColor: { dark: string; light: string };
-  data: any[];
+  currentPage: string
 }>;
 
 export default function ParallaxNavbar({
   children,
-  headerImage,
-  headerBackgroundColor,
-  data
+  currentPage
 }: Props) {
-  const colorScheme = useColorScheme() ?? 'light';
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
-  const scrollOffset = useScrollViewOffset(scrollRef);
-
-  const headerAnimatedStyle = useAnimatedStyle(() => {
-    return {
-      transform: [
-        {
-          translateY: interpolate(
-            scrollOffset.value,
-            [-HEADER_HEIGHT, 0, HEADER_HEIGHT],
-            [-HEADER_HEIGHT / 2, 0, HEADER_HEIGHT * 0.75]
-          ),
-        },
-        {
-          scale: interpolate(scrollOffset.value, [-HEADER_HEIGHT, 0, HEADER_HEIGHT], [2, 1, 1]),
-        },
-      ],
-    };
-  });
   const [overlayOpacity, setOverlayOpacity] = useState(0);
+  const apiKey = process.env.EXPO_PUBLIC_TMBD_API_KEY
+  const colorScheme = useColorScheme() ?? 'light';
+
+  const [Trending, setTrending] = useState<Movie[]>([]);
+  const [MoviePopular, setMoviePopular] = useState<Movie[]>([]);
+  const [TvTrending, setTvTrending] = useState<Tv[]>([]);
 
   const handleScroll = (event: { nativeEvent: { contentOffset: { y: any; }; }; }) => {
     const scrollPosition = event.nativeEvent.contentOffset.y;
-    // Sesuaikan dengan nilai yang sesuai untuk mengubah opacity
     const newOpacity = scrollPosition > 100 ? 1 : 0;
     setOverlayOpacity(newOpacity);
   };
+
+  useEffect(() => {
+    const fetchData = async (url: string, setData: any) => {
+        try {
+        const response = await fetch(url);
+        const data = await response.json();
+        setData(data.results);
+        } catch (error) {
+        console.error(error);
+    }};
+    fetchData(`${api}/trending/movie/day?api_key=${apiKey}`, setTrending);
+    fetchData(`${api}/movie/popular?api_key=${apiKey}`, setMoviePopular);
+    fetchData(`${api}/trending/tv/day?api_key=${apiKey}`, setTvTrending);
+  }, [apiKey]);
 
   return (
     <ThemedView style={styles.container}>
@@ -65,19 +58,22 @@ export default function ParallaxNavbar({
         <Animated.View
           style={[
             styles.header,
-            { backgroundColor: headerBackgroundColor[colorScheme] },
-            // headerAnimatedStyle,
+            { backgroundColor: `#fff` },
           ]}
         >
           <View style={styles.overlay} />
-          <ToggleMenu data={data} />
+          <ToggleMenu data={(currentPage === 'movies' ? Trending : currentPage === 'popular' ? MoviePopular : currentPage === 'tv' ? TvTrending : []) as any[]} />
           <LinearGradient
-            // Button Linear Gradient
             className='z-20'
             colors={['rgba(21, 21, 21, 0.1)', 'rgba(21, 21, 21, 7)', ]}
             style={styles.LinierContainer}
           />
-          {headerImage}
+          <Image
+            source={{
+              uri: `${imageBaseUrl}${currentPage === 'movies' ? Trending[0]?.poster_path : currentPage === 'popular' ? MoviePopular[0]?.poster_path : currentPage === 'tv' ? TvTrending[0]?.poster_path : ''}`,
+            }}
+            style={styles.poster}
+          />
         </Animated.View>
         <View className='bg-[#151515]' style={styles.content}>{children}</View>
       </Animated.ScrollView>
@@ -124,5 +120,11 @@ const styles = StyleSheet.create({
   LinierContainer: {
     flex: 1,
     marginTop: 20
-  }
+  },
+  poster: {
+    height: "100%",
+    width: "100%",
+    position: "absolute",
+    
+  },
 });
