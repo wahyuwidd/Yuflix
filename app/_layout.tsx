@@ -33,6 +33,7 @@ export default function RootLayout() {
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name='movies/detail/[id]' options={{ headerShown: true, headerTransparent : true, headerTitle: "", headerTintColor: "white" }} />
         <Stack.Screen name='tv/detail/[id]' options={{ headerShown: true, headerTransparent : true, headerTitle: "", headerTintColor: "white" }} />
+        <Stack.Screen name='person/detail/[id]' options={{ headerShown: true, headerTransparent : true, headerTitle: "", headerTintColor: "white" }} />
         <Stack.Screen name='genre' options={{ headerShown: false, headerTintColor: "white" }} />
         <Stack.Screen name="+not-found" />
       </Stack>

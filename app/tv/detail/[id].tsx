@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { useLocalSearchParams } from 'expo-router'
 import { FontAwesome5 } from '@expo/vector-icons';
 
-const DetailMovie = () => {
+const DetailTv = () => {
 const { id } = useLocalSearchParams<{id: string}>();
   const [tvDetail, setTvDetail] = useState<Tv>();
   const [movieVideo, setMovieVideo] = useState<MovieVideo>();
@@ -104,4 +104,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default DetailMovie
+export default DetailTv

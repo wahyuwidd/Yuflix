@@ -6,5 +6,6 @@ interface Search {
     first_air_date: string
     media_type: string
     backdrop_path: string
+    profile_path: string
 }
 

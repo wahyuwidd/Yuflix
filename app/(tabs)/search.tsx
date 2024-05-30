@@ -109,21 +109,28 @@ export default function TabTwoScreen() {
   const renderItemSearch = ({ item, index }: { item: Search, index: number }) => (
     <Link className="bg-[#222831] h-[90px] w-full mb-1" href={ item.media_type === 'movie' ? `/movies/detail/${item.id}` : item.media_type === 'tv' ? `/tv/detail/${item.id}`: `/person/detail/${item.id}`}>
     <View className="flex flex-row" key={index}>
-      <Image
+      {item.media_type === 'person' ? <Image
+            className="h-[90px] ml-10 w-[90px] pl-30 rounded-full backdrop-blur-lg"
+            style={{ borderWidth: 1, opacity: 0.5 }}
+            source={{
+                uri: `https://image.tmdb.org/t/p/w500${item.profile_path}`,
+            }}
+            /> : <Image
         source={{ uri: `https://image.tmdb.org/t/p/w500${item.backdrop_path}` }}
         className="h-[90px] w-[155px] mb-3"
         placeholder={blurhash}
-      />
+      /> }
       <View className="bg-[#222831] h-[90px] w-full mr-10">
         <Text className="text-white pl-4 mt-2 text-md font-bold w-[155px]">
           {truncateTitle(item.media_type === 'movie' ? item.title : item.name, 5)}
         </Text>
         <Text className="text-white pl-4 mt-2 text-sm w-[155px]">
-          {item.media_type}
-        </Text>
+        {item.media_type}
+      </Text>
+        {item.media_type === 'person' ? null : 
         <View className="absolute w-full mt-8 ml-[190px]">
-          <Feather name="play-circle" size={24} color="white" />
-        </View>
+        <Feather name="play-circle" size={24} color="white" />
+      </View>}
       </View>
     </View>
     </Link>
@@ -169,7 +176,7 @@ export default function TabTwoScreen() {
         }
         <TextInput
           style={styles.input}
-          placeholder="Search for Tv Shows, Movies, Peopled, More..."
+          placeholder="Search for Tv Shows, Movies, People, More..."
           onChangeText={setText}
           value={text}
           className="rounded-md bg-[#222831] text-[#B5C0D0]"
