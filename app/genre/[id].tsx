@@ -2,6 +2,7 @@ import { View, Text, ActivityIndicator, StyleSheet, Image, FlatList } from 'reac
 import React, { useEffect, useState } from 'react'
 import { Link, useLocalSearchParams } from 'expo-router';
 import { api } from '@/utils/api';
+import CardGenre from '@/components/CardGenre';
 
 const GenreId = () => {
     const { id } = useLocalSearchParams<{id: string}>();
@@ -9,6 +10,7 @@ const GenreId = () => {
     const [data, setData] = useState<GenreId[]>([]);
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(1);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
       fetchData(page);
@@ -39,25 +41,16 @@ const GenreId = () => {
       return <ActivityIndicator style={styles.loading} />;
     };
 
-    const renderItem = ({ item, index }: { item: GenreId, index: number }) => (
-      <Link className="bg-[#222831] h-[90px] w-full mb-1" href={`/tv/detail/${item.id}`}>
-      <View className="flex flex-wrap" key={index}>
-        <Image
-          source={{ uri: `https://image.tmdb.org/t/p/w500${item.poster_path}` }}
-          className="h-[90px] w-[155px] mb-3"
-        />
-      </View>
-      </Link>
-    );
-
     useEffect(()=> {
       fetch(`${api}/discover/movie?api_key=${process.env.EXPO_PUBLIC_TMBD_API_KEY}&with_genres=${idGenre}`)
       .then(response => response.json())
-      .then(data => setData(data.results))
+      .then(data => {setData(data.results), setIsLoading(false)})
     }, [idGenre])
 
   return (
-    <View className=''>
+    <>
+      
+        <View className=''>
       <FlatList
       data={data}
       numColumns={3}
@@ -66,21 +59,15 @@ const GenreId = () => {
       renderItem={({ item, index }) => (
         <Link style={{ flex: 1, margin: 2 }} className='h-[170px] w-[115px] rounded-md mb-3' href={`/movies/detail/${item.id}`}>
         <View style={{ flex: 1, margin: 2 }}>
-          {/* <View style={{
-              backgroundColor: "#222831",
-              height: 100,
-              justifyContent: "center",
-              alignItems: "center",
-            }}  > */}
-          <Image
-                key={index}
-                className="h-[170px] w-[115px] rounded-md mb-3"
-                // placeholder={{ blurhash }}
-                source={{
-                  uri: `https://image.tmdb.org/t/p/w500${item.poster_path}`,
-                }}
-              />
-          {/* </View> */}
+        <CardGenre
+          uri={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
+          style={styles.image}
+          placeholderComponent={
+            <View style={styles.placeholder}>
+              <Image className="h-[170px] w-[115px] rounded-md" source={require('@/assets/images/logo.png')} />
+            </View>
+          }
+        />
         </View>
         </Link>
       )}
@@ -90,11 +77,26 @@ const GenreId = () => {
       ListFooterComponent={renderFooter}
     />
     </View>
+    </>
   )
 }
 const styles = StyleSheet.create({
   loading: {
     paddingVertical: 20,
+  },
+  image: {
+    height: 170,
+    width: 115,
+    borderRadius: 8,
+    marginBottom: 8,
+  },
+  placeholder: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 170,
+    width: 115,
+    backgroundColor: '#eee',
+    borderRadius: 8,
   },
 });
 

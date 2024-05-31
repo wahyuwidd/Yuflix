@@ -47,7 +47,8 @@ const DetailMovie = () => {
 
   if(!movieDetail) return null
   const isLongText = movieDetail!.overview.length > 50;
-  
+  const blurhash =
+  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
   return (
     <>
     {isLoaded ? (
@@ -108,28 +109,30 @@ const DetailMovie = () => {
                   ))}
                 </View>
               </ScrollView>
-
-              <Text className='mt-15 text-xl text-white font-bold'>Similar Movies</Text>
-              <ScrollView>
-                <View className='w-full flex flex-row flex-wrap justify-between gap-1 p-3'>
-                  {similarMovies.slice(0, 18).map((data, index) => (
-                    <Link
-                      className="h-[170px] w-[115px] rounded-md mb-3"
-                      href={`/movies/detail/${data.id}`}
-                      key={index}
-                    >
-                      <Image
+              
+              {similarMovies && similarMovies.length > 0 && (
+                <><Text className='mt-15 text-xl text-white font-bold'>Similar Movies</Text><ScrollView>
+                  <View className='w-full flex flex-row flex-wrap justify-between gap-1 p-3'>
+                    {similarMovies.slice(0, 18).map((data, index) => (
+                      <Link
+                        className="h-[170px] w-[115px] rounded-md mb-3"
+                        href={`/movies/detail/${data.id}`}
                         key={index}
-                        className="h-[170px] w-[115px] rounded-xl mb-3"
-                        // placeholder={{ blurhash }}
-                        source={{
-                          uri: `https://image.tmdb.org/t/p/w500${data.poster_path}`,
-                        }} />
-                    </Link>
-                  ))}
-                </View>
-              </ScrollView>
-
+                      >
+                        <Image
+                          key={index}
+                          className="h-[170px] w-[115px] rounded-xl mb-3"
+                          placeholder={{ blurhash }}
+                          source={{
+                            uri: `https://image.tmdb.org/t/p/w500${data.poster_path}`,
+                          }} />
+                      </Link>
+                    ))}
+                  </View>
+                </ScrollView></>
+  
+              )}
+              
             </View>
           </ScrollView>
         </View></>

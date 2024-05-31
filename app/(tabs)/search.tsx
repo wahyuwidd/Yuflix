@@ -118,7 +118,7 @@ export default function TabTwoScreen() {
             /> : <Image
         source={{ uri: `https://image.tmdb.org/t/p/w500${item.backdrop_path}` }}
         className="h-[90px] w-[155px] mb-3"
-        placeholder={blurhash}
+        placeholder={{blurhash}}
       /> }
       <View className="bg-[#222831] h-[90px] w-full mr-10">
         <Text className="text-white pl-4 mt-2 text-md font-bold w-[155px]">
