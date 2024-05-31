@@ -9,6 +9,7 @@ const { id } = useLocalSearchParams<{id: string}>();
   const [tvDetail, setTvDetail] = useState<Tv>();
   const [movieVideo, setMovieVideo] = useState<MovieVideo>();
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
   useEffect(() => {
     fetch(`https://api.themoviedb.org/3/tv/${id}?api_key=${process.env.EXPO_PUBLIC_TMBD_API_KEY}`)
     .then(response => response.json())
@@ -18,7 +19,7 @@ const { id } = useLocalSearchParams<{id: string}>();
   useEffect(() => {
     fetch(`https://api.themoviedb.org/3/tv/${id}/videos?api_key=${process.env.EXPO_PUBLIC_TMBD_API_KEY}`)
     .then(response => response.json())
-    .then(data => {setMovieVideo(data)})
+    .then(data => {setMovieVideo(data), setIsLoaded(true)})
   }, [id])
 
   const handlePress = (url: string) => {
@@ -38,7 +39,9 @@ const { id } = useLocalSearchParams<{id: string}>();
   
   return (
     <>
-    <View className='bg-[#151515] h-full'>
+    {isLoaded ? (
+      <>
+        <View className='bg-[#151515] h-full'>
       <Image className='w-full h-full' blurRadius={100} contentFit='fill' source={'https://image.tmdb.org/t/p/w500' + tvDetail?.poster_path} />
       <View style={styles.overlay} />
       <View className='absolute items-center mt-20 flex-1 w-full'>
@@ -92,6 +95,8 @@ const { id } = useLocalSearchParams<{id: string}>();
       </View>
       
     </View>
+      </>
+    ): null}
     </>
   )
 }

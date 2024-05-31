@@ -1,8 +1,7 @@
-import { View, Text, ScrollView } from 'react-native'
+import { View, ScrollView } from 'react-native'
 import { Image } from 'expo-image';
 import React from 'react'
 import { Link } from 'expo-router'
-import SkeletonCardHome from './Skeleton';
 
 const CardTv = ( {Data, isTrending}: {Data : Tv[], isTrending : boolean} ) => {
     const filteredData = Data.filter((_, index) => index !== 0);
@@ -14,7 +13,7 @@ const CardTv = ( {Data, isTrending}: {Data : Tv[], isTrending : boolean} ) => {
           {isTrending ? filteredData.map((data, index) => (
             <Link
               className="h-[170px] w-[115px] rounded-md mb-3"
-              href={`/movies/detail/${data.id}`}
+              href={`/tv/detail/${data.id}`}
               key={index}
             >
               <Image

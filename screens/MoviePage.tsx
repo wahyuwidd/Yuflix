@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import CardMovies from "./CardMovies";
-import CardPeople from "./CardPeople";
-import SkeletonCardHome from "./Skeleton";
-import SkeletonCardPeople from "./SkeletonPeople";
 import { StyleSheet, Text } from "react-native";
 import { api } from "@/utils/api";
+import CardMovies from "@/components/card/CardMovies";
+import CardPeople from "@/components/card/CardPeople";
+import SkeletonCardHome from "@/components/skeleton/Skeleton";
+import SkeletonCardPeople from "@/components/skeleton/SkeletonPeople";
 
 const MoviesPage = () => {
     const [isLoadedPeople, setIsLoadedPeople] = useState(true);

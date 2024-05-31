@@ -1,5 +1,4 @@
-import CardMovies from '@/components/home/CardMovies';
-import CardPerson from '@/components/home/CardPerson';
+import CardPerson from '@/components/card/CardPerson';
 import { useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { View, Text, ScrollView, Image } from 'react-native'

@@ -2,9 +2,9 @@ import { StatusBar, View } from 'react-native';
 import ParallaxNavbar from '@/components/ParallaxNavbar';
 import { useEffect, useState } from 'react';
 import { useLocalSearchParams } from 'expo-router';
-import MoviesPage from '@/components/home/MoviePage';
-import PopularPage from '@/components/home/PopularPage';
-import TvPage from '@/components/home/TvShowPage';
+import MoviesPage from '@/screens/MoviePage';
+import PopularPage from '@/screens/PopularPage';
+import TvPage from '@/screens/TvShowPage';
 
 export default function HomeScreen() {
   const { params } = useLocalSearchParams<{params: string}>();

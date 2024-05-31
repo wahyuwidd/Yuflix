@@ -1,7 +1,6 @@
 
 import { View, Text, ScrollView, Image } from 'react-native'
 import React from 'react'
-import SkeletonCardPeople from './SkeletonPeople';
 import { Link } from 'expo-router';
 
 const CardPeople = ({Poeple}: {Poeple : People[]}) => {

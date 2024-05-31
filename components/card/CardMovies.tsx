@@ -2,7 +2,6 @@ import { View, Text, ScrollView } from 'react-native'
 import { Image } from 'expo-image';
 import React from 'react'
 import { Link } from 'expo-router'
-import SkeletonCardHome from './Skeleton';
 
 const CardMovies = ( {Data, isTrending}: {Data : Movie[], isTrending : boolean} ) => {
     const filteredData = Data.filter((_, index) => index !== 0);

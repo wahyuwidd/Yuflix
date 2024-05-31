@@ -1,11 +1,10 @@
 import { Image } from 'expo-image';
-import { View, Text, StyleSheet, Linking, ScrollView } from 'react-native'
+import { View, Text, StyleSheet, Linking, ScrollView, Touchable, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { Link, useLocalSearchParams } from 'expo-router'
 import { FontAwesome5 } from '@expo/vector-icons';
 import { api } from '@/utils/api';
-import CardMovies from '@/components/home/CardMovies';
-import CardSimiliar from '@/components/CardSimiliar';
+import CardSimiliar from '@/components/card/CardSimiliar';
 
 const DetailMovie = () => {
   const { id } = useLocalSearchParams<{id: string}>();
@@ -39,7 +38,7 @@ const DetailMovie = () => {
   }, [id])
 
   const handlePress = (url: string) => {
-    Linking.openURL(url).catch(err => console.error("Couldn't load page", err));
+    Linking.openURL(`https://www.youtube.com/watch?v=${url}`).catch(err => console.error("Couldn't load page", err));
   }
 
   const toggleExpansion = () => {
@@ -74,7 +73,7 @@ const DetailMovie = () => {
                 ))}
               </View>
               <Text
-                onPress={() => handlePress(`https://www.youtube.com/watch?v=${movieVideo?.results[0]?.key}`)}
+                onPress={() => handlePress(`${movieVideo?.results[0]?.key}`)}
                 className='mt-[10px] bg-white px-32 py-4 rounded-md font-bold'
               >
                 <FontAwesome5 name="play" size={15} color="black" /> Play
@@ -97,6 +96,7 @@ const DetailMovie = () => {
                 <View className='w-full flex flex-row gap-4 p-5'>
                   {movieVideo?.results.map((video) => (
                     <View className='w-[250px] relative' key={video.id}>
+                      <TouchableOpacity onPress={() => handlePress(`${video.key}`)}>
                       <Image
                         className='w-[250px] h-[140px] mt-2 rounded-md'
                         source={{ uri: 'https://img.youtube.com/vi/' + video.key + '/maxresdefault.jpg' }} />
@@ -104,6 +104,7 @@ const DetailMovie = () => {
                       <View className='absolute items-center mt-2 justify-center w-[250px] h-[140px]'>
                         <FontAwesome5 name="play" size={25} color="white" />
                       </View>
+                      </TouchableOpacity>
                       <Text className='text-white font-bold'>{video.type} - {`On ${video.site}`} </Text>
                       <Text className='text-white'>{video.name}</Text>
                     </View>

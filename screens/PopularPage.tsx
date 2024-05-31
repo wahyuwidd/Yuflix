@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import { api } from '@/utils/api';
-import CardMovies from './CardMovies';
-import CardPeople from './CardPeople';
 import {Text, StyleSheet} from 'react-native';
-import SkeletonCardHome from './Skeleton';
-import SkeletonCardPeople from './SkeletonPeople';
-import CardTv from './CardTv';
+import CardMovies from '@/components/card/CardMovies';
+import CardPeople from '@/components/card/CardPeople';
+import CardTv from '@/components/card/CardTv';
+import SkeletonCardHome from '@/components/skeleton/Skeleton';
+import SkeletonCardPeople from '@/components/skeleton/SkeletonPeople';
+
 
 const PopularPage = () => {
     const [isLoadedPopularPeople, setIsLoadedPopularPeople] = useState(true);

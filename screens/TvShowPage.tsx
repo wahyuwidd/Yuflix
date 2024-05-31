@@ -1,10 +1,11 @@
-import CardPeople from "./CardPeople";
-import CardTv from "./CardTv";
-import SkeletonCardHome from "./Skeleton";
-import SkeletonCardPeople from "./SkeletonPeople";
 import { StyleSheet, Text } from "react-native";
 import { api } from "@/utils/api";
 import { useEffect, useState } from "react";
+import CardPeople from "@/components/card/CardPeople";
+import CardTv from "@/components/card/CardTv";
+import SkeletonCardHome from "@/components/skeleton/Skeleton";
+import SkeletonCardPeople from "@/components/skeleton/SkeletonPeople";
+
 
 
 const TvPage = () => {

@@ -2,7 +2,7 @@ import { View, Text, ActivityIndicator, StyleSheet, Image, FlatList } from 'reac
 import React, { useEffect, useState } from 'react'
 import { Link, useLocalSearchParams } from 'expo-router';
 import { api } from '@/utils/api';
-import CardGenre from '@/components/CardGenre';
+import CardGenre from '@/components/card/CardGenre';
 
 const GenreId = () => {
     const { id } = useLocalSearchParams<{id: string}>();

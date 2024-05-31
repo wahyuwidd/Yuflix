@@ -1,4 +1,4 @@
-import { useEffect, useState, type PropsWithChildren, type ReactElement } from 'react';
+import { useEffect, useState, type PropsWithChildren, } from 'react';
 import { Image } from 'expo-image';
 import { StyleSheet, View, useColorScheme } from 'react-native';
 import Animated, {
@@ -6,7 +6,7 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import { ThemedView } from '@/components/ThemedView';
-import ToggleMenu from './home/ToggleMenu';
+import ToggleMenu from './ToggleMenu';
 import { LinearGradient } from 'expo-linear-gradient';
 import { api, imageBaseUrl } from '@/utils/api';
 
