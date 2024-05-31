@@ -40,7 +40,7 @@ const DetailPerson = () => {
                         <View style={{ alignItems: 'center', marginRight: 10 }}>
                             <Text className='text-white text-sm'>Gender</Text>
                             <Text className='text-white text-sm'>
-                                {person?.gender === 0 ? 'Not set / not specified' : 
+                                {person?.gender === 0 ? 'Not set' : 
                                 person?.gender === 1 ? 'Female' : 
                                 person?.gender === 2 ? 'Male' : 
                                 person?.gender === 3 ? 'Non-binary' : 'Unknown'}
