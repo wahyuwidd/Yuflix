@@ -5,6 +5,7 @@ import { Link, useLocalSearchParams } from 'expo-router'
 import { FontAwesome5 } from '@expo/vector-icons';
 import { api } from '@/utils/api';
 import CardMovies from '@/components/home/CardMovies';
+import CardSimiliar from '@/components/CardSimiliar';
 
 const DetailMovie = () => {
   const { id } = useLocalSearchParams<{id: string}>();
@@ -119,13 +120,7 @@ const DetailMovie = () => {
                         href={`/movies/detail/${data.id}`}
                         key={index}
                       >
-                        <Image
-                          key={index}
-                          className="h-[170px] w-[115px] rounded-xl mb-3"
-                          placeholder={{ blurhash }}
-                          source={{
-                            uri: `https://image.tmdb.org/t/p/w500${data.poster_path}`,
-                          }} />
+                        <CardSimiliar uri={`https://image.tmdb.org/t/p/w500${data.poster_path}`} />
                       </Link>
                     ))}
                   </View>
