@@ -2,6 +2,7 @@
 import { View, Text, ScrollView, Image } from 'react-native'
 import React from 'react'
 import SkeletonCardPeople from './SkeletonPeople';
+import { Link } from 'expo-router';
 
 const CardPeople = ({Poeple}: {Poeple : People[]}) => {
     const colors = ['red', 'blue', 'green', 'yellow', 'purple'];
@@ -9,7 +10,8 @@ const CardPeople = ({Poeple}: {Poeple : People[]}) => {
     <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
         <View className="flex flex-row gap-1">
         {Poeple.map((data, index) => (
-            <View key={index} className='mb-8 items-center text-center justify-center'>
+            <Link className='mb-8' key={index} href={`/person/detail/${data.id}`}>
+            <View className='mb-8 items-center text-center justify-center'>
             <Image
             className="h-[110px] w-[110px] rounded-full backdrop-blur-lg"
             style={{ borderWidth: 1, borderColor: colors[index % colors.length], opacity: 0.5 }}
@@ -24,6 +26,7 @@ const CardPeople = ({Poeple}: {Poeple : People[]}) => {
                 </View>
             </View>
         </View>
+        </Link>
         ))}
         </View>
     </ScrollView>
