@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "yuflix",
+    "name": "Yuflix",
     "slug": "yuflix-app-movie",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -19,7 +19,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.wwxxc.yuflixappmovie"
     },
     "web": {
       "bundler": "metro",
