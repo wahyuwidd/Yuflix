@@ -1,50 +1,60 @@
-# Welcome to your Expo app 👋
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+# Yuflix - Netflix Clone
 
-## Get started
+a movie mobile app with data from [TMDB](https://www.themoviedb.org/) website. Build with react-native [expo](https://docs.expo.dev/) and [nativewind](https://www.nativewind.dev/quick-starts/expo)
 
-1. Install dependencies
 
-   ```bash
-   npm install
-   ```
+## Screenshots
 
-2. Start the app
+![App Screenshot](https://i.postimg.cc/Kz2YQFtd/1.png)
 
-   ```bash
-    npx expo start
-   ```
 
-In the output, you'll find options to open the app in a
+## Demo
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+Scan QR code in [Expo Go](https://expo.dev/go) android to preview Demo Yuflix-Netflix Clone App Movie
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+![demo](https://i.postimg.cc/Gth8br7Z/2.png)
+## Features
 
-## Get a fresh project
+- View popular, trending today, upcoming and top rated Movies and Tv Shows.
+- View Individual movies and get the movie data such as cast, movie duration, similiar movies,etc.
+- View Individual Persons and get thier details.
+- Shows all genres Movies
+- Search for Movies, Tv Shows and People.
+- Get and Watch Trailer Movies
 
-When you're ready, run:
+
+## Install and Usage
+
+Clone the project
 
 ```bash
-npm run reset-project
+  git clone https://github.com/wwxxc/Yuflix
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+Go to the project directory
 
-## Learn more
+```bash
+  cd Yuflix
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+Install dependencies
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+```bash
+  npm install
+```
 
-## Join the community
+Start the app
 
-Join our community of developers creating universal apps.
+```bash
+  npm run start
+```
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+
+## Authors
+
+- [@wwxxc](https://www.github.com/wwxxc)
+## Support
+
+For support, [trakteer me](https://trakteer.id/woilah3/link)
+
