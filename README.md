@@ -44,6 +44,12 @@ Install dependencies
   npm install
 ```
 
+Add API_KEY [TMDB](https://www.themoviedb.org/) in .env
+
+```bash
+  EXPO_PUBLIC_TMBD_API_KEY=your_apikey
+```
+
 Start the app
 
 ```bash
