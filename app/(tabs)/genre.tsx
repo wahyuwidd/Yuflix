@@ -8,13 +8,17 @@ export default function Genre() {
   const [data, setData] = useState<GenreList[]>([]);
   const [refreshing, setRefreshing] = useState(false);
 
+  const apiKey = process.env.EXPO_PUBLIC_TMBD_API_KEY;
+
   const fetchGenres = async () => {
-    try {
-      const response = await fetch(`${api}/genre/movie/list?api_key=${process.env.EXPO_PUBLIC_TMBD_API_KEY}`);
-      const result = await response.json();
-      setData(result.genres);
-    } catch (error) {
-      console.error(error);
+    if (apiKey) {
+      try {
+        const response = await fetch(`${api}/genre/movie/list?api_key=${apiKey}`);
+        const result = await response.json();
+        setData(result.genres);
+      } catch (error) {
+        console.error(error);
+      }
     }
   };
 

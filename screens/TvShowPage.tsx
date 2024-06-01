@@ -1,4 +1,4 @@
-import { StyleSheet, Text } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { api } from "@/utils/api";
 import { useEffect, useState } from "react";
 import CardPeople from "@/components/card/CardPeople";
@@ -30,11 +30,22 @@ const TvPage = () => {
             console.error(error);
             setIsLoaded(false);
         }};
-        fetchData(`${api}/trending/person/day?api_key=${apiKey}`, setPeople, setIsLoadedPeople);
-        fetchData(`${api}/trending/tv/day?api_key=${apiKey}`, setTvTrending, setIsLoadedTvTrending);
-        fetchData(`${api}/tv/top_rated?api_key=${apiKey}`, setTvTopRated, setIsLoadedTvTopRated);
-        fetchData(`${api}/tv/on_the_air?api_key=${apiKey}`, setTvOnAir, setIsLoadedTvOnAir);
+
+        if (apiKey) {
+            fetchData(`${api}/trending/person/day?api_key=${apiKey}`, setPeople, setIsLoadedPeople);
+            fetchData(`${api}/trending/tv/day?api_key=${apiKey}`, setTvTrending, setIsLoadedTvTrending);
+            fetchData(`${api}/tv/top_rated?api_key=${apiKey}`, setTvTopRated, setIsLoadedTvTopRated);
+            fetchData(`${api}/tv/on_the_air?api_key=${apiKey}`, setTvOnAir, setIsLoadedTvOnAir);
+        }
     }, [apiKey]);
+
+    if (!apiKey) {
+        return (
+            <View style={styles.errorContainer}>
+                <Text style={styles.errorText}>API key is missing. Please provide a valid API key in .env</Text>
+            </View>
+        );
+    }
     
     return(
         <>
@@ -89,7 +100,17 @@ const styles = StyleSheet.create({
         fontWeight: 'bold', 
         fontSize: 17,
         marginBottom: 5
-    }
+    },
+    errorContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    errorText: {
+        fontSize: 20,
+        textAlign: 'center',
+        color: 'red',
+    },
 });
 
 export default TvPage

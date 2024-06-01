@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { api } from '@/utils/api';
-import {Text, StyleSheet} from 'react-native';
+import {Text, StyleSheet, View} from 'react-native';
 import CardMovies from '@/components/card/CardMovies';
 import CardPeople from '@/components/card/CardPeople';
 import CardTv from '@/components/card/CardTv';
@@ -30,10 +30,21 @@ const PopularPage = () => {
             console.error(error);
             setIsLoaded(false);
         }};
-        fetchData(`${api}/person/popular?api_key=${apiKey}`, setPeoplePopular, setIsLoadedPopularPeople);
-        fetchData(`${api}/movie/popular?api_key=${apiKey}`, setMoviePopular, setIsLoadedMoviePopular);
-        fetchData(`${api}/tv/popular?api_key=${apiKey}`, setTvPopular, setIsLoadedTvPopular);
+        
+        if (apiKey) {
+            fetchData(`${api}/person/popular?api_key=${apiKey}`, setPeoplePopular, setIsLoadedPopularPeople);
+            fetchData(`${api}/movie/popular?api_key=${apiKey}`, setMoviePopular, setIsLoadedMoviePopular);
+            fetchData(`${api}/tv/popular?api_key=${apiKey}`, setTvPopular, setIsLoadedTvPopular);
+        }
     }, [apiKey]);
+
+    if (!apiKey) {
+        return (
+            <View style={styles.errorContainer}>
+                <Text style={styles.errorText}>API key is missing. Please provide a valid API key in .env</Text>
+            </View>
+        );
+    }
 
     return(
         <>
@@ -83,7 +94,17 @@ const styles = StyleSheet.create({
         fontWeight: 'bold', 
         fontSize: 17,
         marginBottom: 5
-    }
+    },
+    errorContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    errorText: {
+        fontSize: 20,
+        textAlign: 'center',
+        color: 'red',
+    },
 });
 
 export default PopularPage

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { StyleSheet, Text } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { api } from "@/utils/api";
 import CardMovies from "@/components/card/CardMovies";
 import CardPeople from "@/components/card/CardPeople";
@@ -12,12 +12,12 @@ const MoviesPage = () => {
     const [isLoadedTopRated, setIsLoadedTopRated] = useState(true);
     const [isLoadedUpcoming, setIsLoadedUpcoming] = useState(true);
     
-    const [People, setPeople] = useState<People[]>([]);
-    const [Trending, setTrending] = useState<Movie[]>([]);
-    const [TopRated, setTopRated] = useState<Movie[]>([]);
-    const [Upcoming, setUpcoming] = useState<Movie[]>([]);
+    const [People, setPeople] = useState([]);
+    const [Trending, setTrending] = useState([]);
+    const [TopRated, setTopRated] = useState([]);
+    const [Upcoming, setUpcoming] = useState([]);
 
-    const apiKey = process.env.EXPO_PUBLIC_TMBD_API_KEY
+    const apiKey = process.env.EXPO_PUBLIC_TMBD_API_KEY;
 
     useEffect(() => {
         const fetchData = async (url: string, setData: any, setIsLoaded: any) => {
@@ -31,12 +31,23 @@ const MoviesPage = () => {
             setIsLoaded(false);
         }};
     
-        fetchData(`${api}/trending/person/day?api_key=${apiKey}`, setPeople, setIsLoadedPeople);
-        fetchData(`${api}/trending/movie/day?api_key=${apiKey}`, setTrending, setIsLoadedTrending);
-        fetchData(`${api}/movie/top_rated?api_key=${apiKey}`, setTopRated, setIsLoadedTopRated);
-        fetchData(`${api}/movie/upcoming?api_key=${apiKey}`, setUpcoming, setIsLoadedUpcoming);
+        if (apiKey) {
+            fetchData(`${api}/trending/person/day?api_key=${apiKey}`, setPeople, setIsLoadedPeople);
+            fetchData(`${api}/trending/movie/day?api_key=${apiKey}`, setTrending, setIsLoadedTrending);
+            fetchData(`${api}/movie/top_rated?api_key=${apiKey}`, setTopRated, setIsLoadedTopRated);
+            fetchData(`${api}/movie/upcoming?api_key=${apiKey}`, setUpcoming, setIsLoadedUpcoming);
+        }
     }, [apiKey]);
-    return(
+
+    if (!apiKey) {
+        return (
+            <View style={styles.errorContainer}>
+                <Text style={styles.errorText}>API key is missing. Please provide a valid API key in .env</Text>
+            </View>
+        );
+    }
+
+    return (
         <>
             <Text style={styles.titlePoster}>Top Cast</Text>
             {isLoadedPeople ? (
@@ -66,10 +77,8 @@ const MoviesPage = () => {
                 <CardMovies Data={Upcoming} isTrending={false} />
             )}
         </>
-
-    )
+    );
 };
-
 
 const styles = StyleSheet.create({
     titleContainer: {
@@ -91,7 +100,17 @@ const styles = StyleSheet.create({
         fontWeight: 'bold', 
         fontSize: 17,
         marginBottom: 5
-    }
+    },
+    errorContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    errorText: {
+        fontSize: 20,
+        textAlign: 'center',
+        color: 'red',
+    },
 });
 
-export default MoviesPage
+export default MoviesPage;

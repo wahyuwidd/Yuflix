@@ -22,30 +22,36 @@ export default function TabTwoScreen() {
   const [loading, setLoading] = useState(false);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
 
+  const apiKey = process.env.EXPO_PUBLIC_TMBD_API_KEY;
+
   useEffect(() => {
-    fetchData(page);
-    fetchDataSearch(page);
+    if(apiKey) {
+      fetchData(page);
+      fetchDataSearch(page);
+    }
   }, [page]);
 
   const fetchData = async (page: number) => {
     if (loading) return;
 
     setLoading(true);
-    try {
-      const response = await fetch(
-        `https://api.themoviedb.org/3/tv/airing_today?api_key=${process.env.EXPO_PUBLIC_TMBD_API_KEY}&page=${page}`
+    if (apiKey){
+      try {
+        const response = await fetch(
+          `https://api.themoviedb.org/3/tv/airing_today?api_key=${apiKey}&page=${page}`
+        );
+        const result = await response.json();
+        const data: Tv[] = result.results
+        const uniqueData = Object.values(
+          data.reduce((acc, item) => {
+              acc[item.id] = item;
+              return acc;
+          }, {} as { [key: number]: Tv })
       );
-      const result = await response.json();
-      const data: Tv[] = result.results
-      const uniqueData = Object.values(
-        data.reduce((acc, item) => {
-            acc[item.id] = item;
-            return acc;
-        }, {} as { [key: number]: Tv })
-    );
-      setData((prevData) => [...prevData, ...uniqueData]);
-    } catch (error) {
-      console.error(error);
+        setData((prevData) => [...prevData, ...uniqueData]);
+      } catch (error) {
+        console.error(error);
+      }
     }
     setLoading(false);
   };
@@ -56,7 +62,7 @@ export default function TabTwoScreen() {
     setLoading(true);
     try {
       const response = await fetch(
-        `https://api.themoviedb.org/3/search/multi?api_key=${process.env.EXPO_PUBLIC_TMBD_API_KEY}&query=${text}&page=${page}`
+        `https://api.themoviedb.org/3/search/multi?api_key=${apiKey}&query=${text}&page=${page}`
       );
       const result = await response.json();
       const data = result.results
@@ -144,9 +150,12 @@ export default function TabTwoScreen() {
   '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
   useEffect(() => {
-    fetch(`https://api.themoviedb.org/3/search/multi?api_key=${process.env.EXPO_PUBLIC_TMBD_API_KEY}&query=${text}`)
+    if(apiKey){
+      fetch(`https://api.themoviedb.org/3/search/multi?api_key=${apiKey}&query=${text}`)
     .then((response) => response.json())
     .then((data) => setMovies(data.results))
+    }
+    
   }, [text])
   useEffect(() => {
     if (text === '') {

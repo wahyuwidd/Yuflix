@@ -42,9 +42,11 @@ export default function ParallaxNavbar({
         } catch (error) {
         console.error(error);
     }};
-    fetchData(`${api}/trending/movie/day?api_key=${apiKey}`, setTrending);
-    fetchData(`${api}/movie/popular?api_key=${apiKey}`, setMoviePopular);
-    fetchData(`${api}/trending/tv/day?api_key=${apiKey}`, setTvTrending);
+    if (apiKey) {
+      fetchData(`${api}/trending/movie/day?api_key=${apiKey}`, setTrending);
+      fetchData(`${api}/movie/popular?api_key=${apiKey}`, setMoviePopular);
+      fetchData(`${api}/trending/tv/day?api_key=${apiKey}`, setTvTrending);
+    }
   }, [apiKey]);
 
   return (
